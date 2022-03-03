@@ -1,24 +1,29 @@
+let node = document.querySelector(".container >div");
 
-let node = document.querySelector(".container >div")
+window.onload = () => {
+  loadbooks();
+};
 
+let books = []
+let filtered_books =[]
 
-
-eyo = () => {
-
-
-    
+function loadbooks() {
   fetch("https://striveschool-api.herokuapp.com/books")
     .then((response) => response.json())
-    .then((data) => (books=data))
-    .then((data)=>{
-        
-        /* data.map((book)=>{console.log(book["img"]);}) */
-        console.log(Object.keys(data[0]));
+    .then((data) => (books = data))
+    .then((data) => {
+      /* data.map((book)=>{console.log(book["img"]);}) */
+      console.log(Object.keys(data[0]));
+      books=data
 
-        data.map(
-            (book)=>{
+      displayBooks(data);
+    });
+}
 
-                let div =   `   <div>
+let displayBooks = (books ) => {
+    node.innerHTML=""
+  books.map((book) => {
+    let div = `   <div>
                 <div class="image-div">
                 <img
                     style="width: 100%; height: 100%"
@@ -41,37 +46,24 @@ eyo = () => {
                 </div>
                 </div>
                 </div>
-                    ` 
-                node.innerHTML+=div
-
-
-            }
-        )
-
-
-              
-
-        
-
-    
-    
-    
-    });
- 
+                    `;
+    node.innerHTML += div;
+  });
 };
 
-/* setTimeout((books) => {
-  console.log(books);
-}, 4000); */
+let searchBook = (query)=>{
+    
+    let search= query
+    /* if(query.length>=3){search=query}
+    console.log(search); */
+
+filtered_books =  books.filter((book) =>
+ book.title.toLowerCase().includes(query.toLowerCase())
+);
+console.log(filtered_books);
+
+displayBooks(filtered_books)
+
+}
 
 
-
-
-
-
-
-
-console.log(node);
-
-
-eyo()
